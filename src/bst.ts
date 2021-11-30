@@ -1,10 +1,12 @@
+import AsciiArtNode from "./ascii-art";
+
 // -------------------------------------------------
 // -------------------  Types  ---------------------
 // -------------------------------------------------
 
 type IBSTNodeOrNull<T> = IBSTNode<T> | null;
 
-interface IBSTNode<T> {
+export interface IBSTNode<T> {
   key: number;
   val?: T;
   parent: IBSTNodeOrNull<T>;
@@ -20,7 +22,7 @@ interface IBSTNode<T> {
   delete(): IBSTNode<T>;
 }
 
-interface IBSTNodeCtor<T> {
+export interface IBSTNodeCtor<T> {
   new (parent: IBSTNodeOrNull<T>, k: number, val?: T): IBSTNode<T>;
 }
 
@@ -38,7 +40,7 @@ export interface IBST<T> {
 // --------------  Implementations  ----------------
 // -------------------------------------------------
 
-class BSTNode<T> implements IBSTNode<T> {
+export class BSTNode<T> extends AsciiArtNode implements IBSTNode<T> {
   key: number;
   val?: T;
   parent: IBSTNodeOrNull<T>;
@@ -46,6 +48,8 @@ class BSTNode<T> implements IBSTNode<T> {
   right: IBSTNodeOrNull<T>;
 
   constructor(parent: IBSTNodeOrNull<T>, k: number, val?: T) {
+    super();
+
     this.key = k;
     this.val = val;
     this.parent = parent || null;
@@ -159,6 +163,10 @@ class BSTNode<T> implements IBSTNode<T> {
     }
   }
 
+  /**
+   * Deletes and returns this node from the BST.
+   * @returns the node deleted.
+   */
   delete(): IBSTNode<T> {
     if (this.parent === null) {
       throw new Error("Can't delete a node whose parent is null");
@@ -194,9 +202,9 @@ class BSTNode<T> implements IBSTNode<T> {
 
 export default class BST<T> implements IBST<T> {
   root: IBSTNodeOrNull<T>;
-  klass: IBSTNodeCtor<T>;
+  klass;
 
-  constructor(klass: IBSTNodeCtor<T> = BSTNode) {
+  constructor(klass = BSTNode) {
     this.root = null;
     this.klass = klass;
   }
@@ -279,7 +287,7 @@ export default class BST<T> implements IBST<T> {
     if (node !== this.root) {
       return node.delete();
     } else {
-      const pseudoRoot = new this.klass(null, 0);
+      const pseudoRoot = new this.klass<T>(null, 0);
       pseudoRoot.left = this.root;
       this.root.parent = pseudoRoot;
 
