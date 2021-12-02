@@ -1,13 +1,19 @@
-import BST from "./bst";
+import BST from "./variants/regular/bst-tree";
 
-const tree = new BST<string>();
-tree.insert(5, "a");
-tree.insert(2, "b");
-tree.insert(7, "c");
+const tree = new BST();
+tree.insert(50);
+tree.insert(20);
+tree.insert(1);
+tree.insert(80);
+tree.insert(5);
 
-const node = tree.insert(1, "d");
-console.log(`next larger of 1 is ${node.nextLarger()?.key}`);
-console.log(`next smaller of 1 is ${node.nextSmaller()?.key}`);
+console.log(tree.findMin()); // 1
+console.log(tree.findMax()); // 80
+
+console.log(tree.nextLarger(1)); // 5
+console.log(tree.nextLarger(80)); // null
 
 tree.delete(5);
-tree.delete(7);
+console.log(tree.nextLarger(1)); // 20
+
+console.log(tree.root?.toString());
