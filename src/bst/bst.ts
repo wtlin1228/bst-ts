@@ -1,10 +1,12 @@
-import { INodeOrNil, INodeOrNull, AbstractBSTNode } from "./bst-node";
+import { INodeOrNull, AbstractBSTNode } from "./bst-node";
 
-export abstract class AbstractBSTree<NIL> {
-  klass!: new (parent: INodeOrNil<NIL>, k: number) => AbstractBSTNode<NIL>;
-  root!: INodeOrNil<NIL>;
+export abstract class AbstractBSTree {
+  klass!: new (parent: INodeOrNull, k: number) => AbstractBSTNode;
+  root!: INodeOrNull;
 
-  abstract assertIsNil(n: any): n is NIL;
+  assertIsNull(n: INodeOrNull): n is null {
+    return n === null || Boolean(n.isNil) === true;
+  }
 
   /**
    * Inserts a node with key k into the subtree rooted at this node.
@@ -12,22 +14,22 @@ export abstract class AbstractBSTree<NIL> {
    * @param val The value of the node to be inserted.
    * @returns The node inserted.
    */
-  abstract insert(k: number): AbstractBSTNode<NIL>;
+  abstract insert(k: number): AbstractBSTNode;
 
   /**
    * Deletes and returns a node with key k if it exists from the BST.
    * @param k The key of the node that we want to delete.
    * @returns The deleted node with key k.
    */
-  abstract delete(k: number): INodeOrNull<NIL>;
+  abstract delete(k: number): INodeOrNull;
 
   /**
    * Finds and returns the node with key k from the subtree rooted at this node.
    * @param k The key of the node we want to find.
    * @returns The node with key k or None if the tree is empty.
    */
-  find(k: number): AbstractBSTNode<NIL> | null {
-    if (this.assertIsNil(this.root)) {
+  find(k: number): AbstractBSTNode | null {
+    if (this.assertIsNull(this.root)) {
       return null;
     }
 
@@ -37,8 +39,8 @@ export abstract class AbstractBSTree<NIL> {
   /**
    * @returns The minimum node of this BST.
    */
-  findMin(): INodeOrNull<NIL> {
-    if (this.assertIsNil(this.root)) {
+  findMin(): INodeOrNull {
+    if (this.assertIsNull(this.root)) {
       return null;
     }
     return this.root.findMin();
@@ -47,8 +49,8 @@ export abstract class AbstractBSTree<NIL> {
   /**
    * @returns The maximum node of this BST.
    */
-  findMax(): INodeOrNull<NIL> {
-    if (this.assertIsNil(this.root)) {
+  findMax(): INodeOrNull {
+    if (this.assertIsNull(this.root)) {
       return null;
     }
     return this.root.findMax();
@@ -60,7 +62,7 @@ export abstract class AbstractBSTree<NIL> {
    * @param k The key of the node of which the successor is to be found.
    * @returns The successor node.
    */
-  nextLarger(k: number): INodeOrNull<NIL> {
+  nextLarger(k: number): INodeOrNull {
     const node = this.find(k);
     return node && node.nextLarger();
   }
@@ -71,7 +73,7 @@ export abstract class AbstractBSTree<NIL> {
    * @param k The key of the node of which the predecessor is to be found.
    * @returns The predecessor node.
    */
-  nextSmaller(k: number): INodeOrNull<NIL> {
+  nextSmaller(k: number): INodeOrNull {
     const node = this.find(k);
     return node && node.nextSmaller();
   }

@@ -1,29 +1,22 @@
 import { AbstractBSTree } from "../../bst";
-import { BST_NIL, IBSTNil } from "./types";
 
-import BSTNode, { IBSTNodeOrNil } from "./bst-node";
+import BSTNode, { IBSTNodeOrNull } from "./bst-node";
 
-type IBSTNodeOrNull = BSTNode | null;
-
-export default class BST extends AbstractBSTree<IBSTNil> {
-  klass: new (parent: IBSTNodeOrNil, k: number) => BSTNode;
-  root: IBSTNodeOrNil;
+export default class BST extends AbstractBSTree {
+  klass: new (parent: IBSTNodeOrNull, k: number) => BSTNode;
+  root: IBSTNodeOrNull;
 
   constructor(klass = BSTNode) {
     super();
 
     this.klass = klass;
-    this.root = BST_NIL;
-  }
-
-  assertIsNil(n: any): n is IBSTNil {
-    return n === BST_NIL;
+    this.root = null;
   }
 
   insert(k: number): BSTNode {
-    const node = new this.klass(BST_NIL, k);
+    const node = new this.klass(null, k);
 
-    if (this.assertIsNil(this.root)) {
+    if (this.assertIsNull(this.root)) {
       this.root = node;
     } else {
       this.root.insert(node);
@@ -35,22 +28,22 @@ export default class BST extends AbstractBSTree<IBSTNil> {
   delete(k: number): IBSTNodeOrNull {
     const node = this.find(k);
 
-    if (this.assertIsNil(node)) {
+    if (this.assertIsNull(node) || node === null) {
       return null;
     }
 
     if (node !== this.root) {
       return node.delete();
     } else {
-      const pseudoRoot = new this.klass(BST_NIL, 0);
+      const pseudoRoot = new this.klass(null, 0);
       pseudoRoot.left = this.root;
       this.root.parent = pseudoRoot;
 
       const deleted = this.root.delete();
 
       this.root = pseudoRoot.left;
-      if (!this.assertIsNil(this.root)) {
-        this.root.parent = BST_NIL;
+      if (!this.assertIsNull(this.root)) {
+        this.root.parent = null;
       }
 
       return deleted;

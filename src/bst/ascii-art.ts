@@ -4,13 +4,13 @@ interface IASCIINode {
   _str(): { lines: string[]; pos: number; width: number };
 }
 
-export default abstract class AsciiArtNode<NIL> implements IASCIINode {
+export default abstract class AsciiArtNode implements IASCIINode {
   key!: any;
   parent!: any;
   left!: any;
   right!: any;
 
-  abstract assertIsNil(n: any): n is NIL;
+  abstract assertIsNull(n: any): n is null;
 
   /**
    * Internal method for ASCII art.
@@ -21,7 +21,7 @@ export default abstract class AsciiArtNode<NIL> implements IASCIINode {
     let leftLines: string[] = [];
     let leftPos = 0;
     let leftWidth = 0;
-    if (!this.assertIsNil(this.left)) {
+    if (!this.assertIsNull(this.left)) {
       const left = this.left._str();
       leftLines = left.lines;
       leftPos = left.pos;
@@ -31,7 +31,7 @@ export default abstract class AsciiArtNode<NIL> implements IASCIINode {
     let rightLines: string[] = [];
     let rightPos = 0;
     let rightWidth = 0;
-    if (!this.assertIsNil(this.right)) {
+    if (!this.assertIsNull(this.right)) {
       const right = this.right._str();
       rightLines = right.lines;
       rightPos = right.pos;
@@ -55,7 +55,7 @@ export default abstract class AsciiArtNode<NIL> implements IASCIINode {
 
     if (
       (middle - label.length) % 2 === 1 &&
-      !this.assertIsNil(this.parent) &&
+      !this.assertIsNull(this.parent) &&
       this === this.parent.left &&
       label.length < middle
     ) {

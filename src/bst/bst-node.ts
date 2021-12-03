@@ -1,48 +1,53 @@
 import AsciiArtNode from "./ascii-art";
 
-export type INodeOrNull<NIL> = AbstractBSTNode<NIL> | null;
-export type INodeOrNil<NIL> = AbstractBSTNode<NIL> | NIL;
+export type INodeOrNull = AbstractBSTNode | null;
 
-export abstract class AbstractBSTNode<NIL> extends AsciiArtNode<NIL> {
+export abstract class AbstractBSTNode extends AsciiArtNode {
   key!: number;
-  parent!: INodeOrNil<NIL>;
-  left!: INodeOrNil<NIL>;
-  right!: INodeOrNil<NIL>;
+  parent!: INodeOrNull;
+  left!: INodeOrNull;
+  right!: INodeOrNull;
 
-  abstract assertIsNil(n: any): n is NIL;
+  // This will be used in red-black tree.
+  // We will treat a node as null if node.isNil is true.
+  isNil?: boolean;
+
+  assertIsNull(n: INodeOrNull): n is null {
+    return n === null || Boolean(n.isNil) === true;
+  }
 
   /**
    * Inserts a node into the subtree rooted at this node.
    * @param node The node to be inserted.
    * @returns
    */
-  abstract insert(n: AbstractBSTNode<NIL>): void;
+  abstract insert(n: AbstractBSTNode): void;
 
   /**
    * Deletes and returns this node from the BST.
    * @returns the node deleted.
    */
-  abstract delete(): AbstractBSTNode<NIL>;
+  abstract delete(): AbstractBSTNode;
 
   /**
    * Finds and returns the node with key k from the subtree rooted at this node.
    * @param k The key of the node we want to find.
    * @returns The node with key k.
    */
-  find(k: number): INodeOrNull<NIL> {
+  find(k: number): INodeOrNull {
     if (k === this.key) {
       return this;
     }
 
     if (k < this.key) {
-      if (this.assertIsNil(this.left)) {
+      if (this.assertIsNull(this.left)) {
         return null;
       }
       return this.left.find(k);
     }
 
     if (k > this.key) {
-      if (this.assertIsNil(this.right)) {
+      if (this.assertIsNull(this.right)) {
         return null;
       }
       return this.right.find(k);
@@ -55,9 +60,9 @@ export abstract class AbstractBSTNode<NIL> extends AsciiArtNode<NIL> {
    * Finds the node with the minimum key in the subtree rooted at this node.
    * @returns The node with the minimum key.
    */
-  findMin(): AbstractBSTNode<NIL> {
-    let current = this as AbstractBSTNode<NIL>;
-    while (!this.assertIsNil(current.left)) {
+  findMin(): AbstractBSTNode {
+    let current = this as AbstractBSTNode;
+    while (!this.assertIsNull(current.left)) {
       current = current.left;
     }
     return current;
@@ -67,9 +72,9 @@ export abstract class AbstractBSTNode<NIL> extends AsciiArtNode<NIL> {
    * Finds the node with the maximum key in the subtree rooted at this node.
    * @returns The node with the maximum key.
    */
-  findMax(): AbstractBSTNode<NIL> {
-    let current = this as AbstractBSTNode<NIL>;
-    while (!this.assertIsNil(current.right)) {
+  findMax(): AbstractBSTNode {
+    let current = this as AbstractBSTNode;
+    while (!this.assertIsNull(current.right)) {
       current = current.right;
     }
     return current;
@@ -78,38 +83,38 @@ export abstract class AbstractBSTNode<NIL> extends AsciiArtNode<NIL> {
   /**
    * Returns the node with the next larger key (the successor) in the BST.
    */
-  nextLarger(): INodeOrNull<NIL> {
-    if (!this.assertIsNil(this.right)) {
+  nextLarger(): INodeOrNull {
+    if (!this.assertIsNull(this.right)) {
       return this.right.findMin();
     }
 
-    let current = this as AbstractBSTNode<NIL>;
+    let current = this as AbstractBSTNode;
     while (
-      !this.assertIsNil(current.parent) &&
+      !this.assertIsNull(current.parent) &&
       current === current.parent.right
     ) {
       current = current.parent;
     }
 
-    return this.assertIsNil(current.parent) ? null : current.parent;
+    return this.assertIsNull(current.parent) ? null : current.parent;
   }
 
   /**
    * Returns the node with the next smaller key (the predecessor) in the BST.
    */
-  nextSmaller(): INodeOrNull<NIL> {
-    if (!this.assertIsNil(this.left)) {
+  nextSmaller(): INodeOrNull {
+    if (!this.assertIsNull(this.left)) {
       return this.left.findMax();
     }
 
-    let current = this as AbstractBSTNode<NIL>;
+    let current = this as AbstractBSTNode;
     while (
-      !this.assertIsNil(current.parent) &&
+      !this.assertIsNull(current.parent) &&
       current === current.parent.left
     ) {
       current = current.parent;
     }
 
-    return this.assertIsNil(current.parent) ? null : current.parent;
+    return this.assertIsNull(current.parent) ? null : current.parent;
   }
 }

@@ -1,2 +1,2 @@
-export { INodeOrNil, INodeOrNull, AbstractBSTNode } from "./bst-node";
+export { AbstractBSTNode } from "./bst-node";
 export { AbstractBSTree } from "./bst";
