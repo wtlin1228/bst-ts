@@ -25,7 +25,7 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
 
   /**
    * Deletes and returns this node from the BST.
-   * @returns the node deleted.
+   * @returns The node deleted.
    */
   abstract delete(): AbstractBSTNode;
 
