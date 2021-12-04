@@ -1,12 +1,14 @@
 import { INodeOrNull, AbstractBSTNode } from "./bst-node";
 
 export abstract class AbstractBSTree {
-  klass!: new (parent: INodeOrNull, k: number) => AbstractBSTNode;
   root!: INodeOrNull;
 
-  assertIsNull(n: INodeOrNull): n is null {
-    return n === null || Boolean(n.isNil) === true;
-  }
+  /**
+   * Check if a pointer should be treated as null.
+   * @param n The pointer to be checked.
+   * @returns Should n be treated as null or not?
+   */
+  abstract assertIsNull(n: INodeOrNull): n is null;
 
   /**
    * Inserts a node with key k into the subtree rooted at this node.
@@ -28,7 +30,7 @@ export abstract class AbstractBSTree {
    * @param k The key of the node we want to find.
    * @returns The node with key k or None if the tree is empty.
    */
-  find(k: number): AbstractBSTNode | null {
+  find(k: number): INodeOrNull {
     if (this.assertIsNull(this.root)) {
       return null;
     }

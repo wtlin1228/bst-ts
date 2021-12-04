@@ -13,6 +13,20 @@ export default class BST extends AbstractBSTree {
     this.root = null;
   }
 
+  assertIsNull(n: IBSTNodeOrNull): n is null {
+    return n === null;
+  }
+
+  find(k: number): IBSTNodeOrNull {
+    const node = super.find(k);
+
+    if (node === null) {
+      return null;
+    }
+
+    return node as BSTNode;
+  }
+
   insert(k: number): BSTNode {
     const node = new this.klass(null, k);
 
@@ -28,7 +42,7 @@ export default class BST extends AbstractBSTree {
   delete(k: number): IBSTNodeOrNull {
     const node = this.find(k);
 
-    if (this.assertIsNull(node) || node === null) {
+    if (this.assertIsNull(node)) {
       return null;
     }
 

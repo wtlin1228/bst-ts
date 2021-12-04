@@ -8,13 +8,12 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
   left!: INodeOrNull;
   right!: INodeOrNull;
 
-  // This will be used in red-black tree.
-  // We will treat a node as null if node.isNil is true.
-  isNil?: boolean;
-
-  assertIsNull(n: INodeOrNull): n is null {
-    return n === null || Boolean(n.isNil) === true;
-  }
+  /**
+   * Check if a pointer should be treated as null.
+   * @param n The pointer to be checked.
+   * @returns Should n be treated as null or not?
+   */
+  abstract assertIsNull(n: INodeOrNull): n is null;
 
   /**
    * Inserts a node into the subtree rooted at this node.

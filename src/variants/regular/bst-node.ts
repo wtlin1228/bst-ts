@@ -17,6 +17,10 @@ export default class BSTNode extends AbstractBSTNode {
     this.right = null;
   }
 
+  assertIsNull(n: IBSTNodeOrNull): n is null {
+    return n === null;
+  }
+
   insert(node: BSTNode): void {
     if (node.key < this.key) {
       if (this.assertIsNull(this.left)) {
