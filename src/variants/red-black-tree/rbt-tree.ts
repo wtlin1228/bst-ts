@@ -19,6 +19,8 @@ export default class RBT extends AbstractBSTree {
     this.nil.isNil = true;
   }
 
+  private insertFixup(n: RBTNode): void {}
+
   assertIsNull(n: IRBTNodeOrNull): n is null {
     return n === null || Boolean(n.isNil) === true;
   }
@@ -43,6 +45,8 @@ export default class RBT extends AbstractBSTree {
     } else {
       this.root.insert(node);
     }
+
+    this.insertFixup(node);
 
     return node;
   }

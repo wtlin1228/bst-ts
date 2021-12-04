@@ -17,20 +17,16 @@ export default class BSTNode extends AbstractBSTNode {
     this.right = null;
   }
 
-  assertIsNull(n: IBSTNodeOrNull): n is null {
-    return n === null;
-  }
-
   insert(node: BSTNode): void {
     if (node.key < this.key) {
-      if (this.assertIsNull(this.left)) {
+      if (this.left === null) {
         node.parent = this;
         this.left = node;
       } else {
         this.left.insert(node);
       }
     } else {
-      if (this.assertIsNull(this.right)) {
+      if (this.right === null) {
         node.parent = this;
         this.right = node;
       } else {
@@ -40,19 +36,19 @@ export default class BSTNode extends AbstractBSTNode {
   }
 
   delete(): BSTNode {
-    if (this.assertIsNull(this.parent)) {
+    if (this.parent === null) {
       throw new Error("Can't delete a node whose parent is null");
     }
 
-    if (this.assertIsNull(this.left) || this.assertIsNull(this.right)) {
+    if (this.left === null || this.right === null) {
       if (this === this.parent.left) {
         this.parent.left = this.left || this.right;
-        if (!this.assertIsNull(this.parent.left)) {
+        if (this.parent.left !== null) {
           this.parent.left.parent = this.parent;
         }
       } else {
         this.parent.right = this.left || this.right;
-        if (!this.assertIsNull(this.parent.right)) {
+        if (this.parent.right !== null) {
           this.parent.right.parent = this.parent;
         }
       }

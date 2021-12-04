@@ -10,7 +10,7 @@ export default abstract class AsciiArtNode implements IASCIINode {
   left!: any;
   right!: any;
 
-  abstract assertIsNull(n: any): n is null;
+  abstract shouldBeTreatedAsNull(): boolean;
 
   /**
    * Internal method for ASCII art.
@@ -21,7 +21,7 @@ export default abstract class AsciiArtNode implements IASCIINode {
     let leftLines: string[] = [];
     let leftPos = 0;
     let leftWidth = 0;
-    if (!this.assertIsNull(this.left)) {
+    if (this.left !== null && !this.left.shouldBeTreatedAsNull()) {
       const left = this.left._str();
       leftLines = left.lines;
       leftPos = left.pos;
@@ -31,7 +31,7 @@ export default abstract class AsciiArtNode implements IASCIINode {
     let rightLines: string[] = [];
     let rightPos = 0;
     let rightWidth = 0;
-    if (!this.assertIsNull(this.right)) {
+    if (this.right !== null && !this.right.shouldBeTreatedAsNull()) {
       const right = this.right._str();
       rightLines = right.lines;
       rightPos = right.pos;
@@ -55,7 +55,8 @@ export default abstract class AsciiArtNode implements IASCIINode {
 
     if (
       (middle - label.length) % 2 === 1 &&
-      !this.assertIsNull(this.parent) &&
+      this.parent !== null &&
+      !this.parent.shouldBeTreatedAsNull() &&
       this === this.parent.left &&
       label.length < middle
     ) {

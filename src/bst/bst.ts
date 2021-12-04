@@ -8,7 +8,9 @@ export abstract class AbstractBSTree {
    * @param n The pointer to be checked.
    * @returns Should n be treated as null or not?
    */
-  abstract assertIsNull(n: INodeOrNull): n is null;
+  assertIsNull(n: INodeOrNull): n is null {
+    return n === null;
+  }
 
   /**
    * Inserts a node with key k into the subtree rooted at this node.

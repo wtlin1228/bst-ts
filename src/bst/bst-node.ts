@@ -9,11 +9,12 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
   right!: INodeOrNull;
 
   /**
-   * Check if a pointer should be treated as null.
-   * @param n The pointer to be checked.
+   * Check if this node should be treated as null.
    * @returns Should n be treated as null or not?
    */
-  abstract assertIsNull(n: INodeOrNull): n is null;
+  shouldBeTreatedAsNull(): boolean {
+    return false;
+  }
 
   /**
    * Inserts a node into the subtree rooted at this node.
@@ -39,14 +40,14 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
     }
 
     if (k < this.key) {
-      if (this.assertIsNull(this.left)) {
+      if (this.left === null || this.left.shouldBeTreatedAsNull()) {
         return null;
       }
       return this.left.find(k);
     }
 
     if (k > this.key) {
-      if (this.assertIsNull(this.right)) {
+      if (this.right === null || this.right.shouldBeTreatedAsNull()) {
         return null;
       }
       return this.right.find(k);
@@ -61,7 +62,7 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    */
   findMin(): AbstractBSTNode {
     let current = this as AbstractBSTNode;
-    while (!this.assertIsNull(current.left)) {
+    while (current.left !== null && !current.left.shouldBeTreatedAsNull()) {
       current = current.left;
     }
     return current;
@@ -73,7 +74,7 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    */
   findMax(): AbstractBSTNode {
     let current = this as AbstractBSTNode;
-    while (!this.assertIsNull(current.right)) {
+    while (current.right !== null && !current.right.shouldBeTreatedAsNull()) {
       current = current.right;
     }
     return current;
@@ -83,37 +84,47 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    * Returns the node with the next larger key (the successor) in the BST.
    */
   nextLarger(): INodeOrNull {
-    if (!this.assertIsNull(this.right)) {
+    if (this.right !== null && !this.right.shouldBeTreatedAsNull()) {
       return this.right.findMin();
     }
 
     let current = this as AbstractBSTNode;
     while (
-      !this.assertIsNull(current.parent) &&
+      current.parent !== null &&
+      !current.parent.shouldBeTreatedAsNull() &&
       current === current.parent.right
     ) {
       current = current.parent;
     }
 
-    return this.assertIsNull(current.parent) ? null : current.parent;
+    if (current.parent === null || current.parent.shouldBeTreatedAsNull()) {
+      return null;
+    }
+
+    return current.parent;
   }
 
   /**
    * Returns the node with the next smaller key (the predecessor) in the BST.
    */
   nextSmaller(): INodeOrNull {
-    if (!this.assertIsNull(this.left)) {
+    if (this.left !== null && !this.left.shouldBeTreatedAsNull()) {
       return this.left.findMax();
     }
 
     let current = this as AbstractBSTNode;
     while (
-      !this.assertIsNull(current.parent) &&
+      current.parent !== null &&
+      !current.parent.shouldBeTreatedAsNull() &&
       current === current.parent.left
     ) {
       current = current.parent;
     }
 
-    return this.assertIsNull(current.parent) ? null : current.parent;
+    if (current.parent === null || current.parent.shouldBeTreatedAsNull()) {
+      return null;
+    }
+
+    return current.parent;
   }
 }

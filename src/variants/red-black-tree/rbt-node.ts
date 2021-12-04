@@ -22,30 +22,26 @@ export default class RBTNode extends AbstractBSTNode {
     this.isNil = false;
   }
 
-  assertIsNull(n: IRBTNodeOrNull): n is null {
-    return n === null || Boolean(n.isNil) === true;
+  shouldBeTreatedAsNull(): boolean {
+    return this.isNil;
   }
-
-  //   _insertFixup(): void {}
 
   insert(node: RBTNode): void {
     if (node.key < this.key) {
-      if (this.assertIsNull(this.left)) {
+      if (this.left === null || this.left.isNil) {
         node.parent = this;
         this.left = node;
       } else {
         this.left.insert(node);
       }
     } else {
-      if (this.assertIsNull(this.right)) {
+      if (this.right === null || this.right.isNil) {
         node.parent = this;
         this.right = node;
       } else {
         this.right.insert(node);
       }
     }
-
-    // this._insertFixup();
   }
 
   delete(): RBTNode {
