@@ -4,15 +4,6 @@ export abstract class AbstractBSTree {
   root!: INodeOrNull;
 
   /**
-   * Check if a pointer should be treated as null.
-   * @param n The pointer to be checked.
-   * @returns Should n be treated as null or not?
-   */
-  assertIsNull(n: INodeOrNull): n is null {
-    return n === null;
-  }
-
-  /**
    * Inserts a node with key k into the subtree rooted at this node.
    * @param k The key of the node to be inserted.
    * @param val The value of the node to be inserted.
@@ -33,31 +24,21 @@ export abstract class AbstractBSTree {
    * @returns The node with key k or None if the tree is empty.
    */
   find(k: number): INodeOrNull {
-    if (this.assertIsNull(this.root)) {
-      return null;
-    }
-
-    return this.root.find(k);
+    return this.root && this.root.find(k);
   }
 
   /**
    * @returns The minimum node of this BST.
    */
   findMin(): INodeOrNull {
-    if (this.assertIsNull(this.root)) {
-      return null;
-    }
-    return this.root.findMin();
+    return this.root && this.root.findMin();
   }
 
   /**
    * @returns The maximum node of this BST.
    */
   findMax(): INodeOrNull {
-    if (this.assertIsNull(this.root)) {
-      return null;
-    }
-    return this.root.findMax();
+    return this.root && this.root.findMax();
   }
 
   /**

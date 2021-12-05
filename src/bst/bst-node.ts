@@ -9,14 +9,6 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
   right!: INodeOrNull;
 
   /**
-   * Check if this node should be treated as null.
-   * @returns Should n be treated as null or not?
-   */
-  shouldBeTreatedAsNull(): boolean {
-    return false;
-  }
-
-  /**
    * Inserts a node into the subtree rooted at this node.
    * @param node The node to be inserted.
    * @returns
@@ -40,14 +32,14 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
     }
 
     if (k < this.key) {
-      if (this.left === null || this.left.shouldBeTreatedAsNull()) {
+      if (this.left === null) {
         return null;
       }
       return this.left.find(k);
     }
 
     if (k > this.key) {
-      if (this.right === null || this.right.shouldBeTreatedAsNull()) {
+      if (this.right === null) {
         return null;
       }
       return this.right.find(k);
@@ -62,7 +54,7 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    */
   findMin(): AbstractBSTNode {
     let current = this as AbstractBSTNode;
-    while (current.left !== null && !current.left.shouldBeTreatedAsNull()) {
+    while (current.left !== null) {
       current = current.left;
     }
     return current;
@@ -74,7 +66,7 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    */
   findMax(): AbstractBSTNode {
     let current = this as AbstractBSTNode;
-    while (current.right !== null && !current.right.shouldBeTreatedAsNull()) {
+    while (current.right !== null) {
       current = current.right;
     }
     return current;
@@ -84,21 +76,13 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    * Returns the node with the next larger key (the successor) in the BST.
    */
   nextLarger(): INodeOrNull {
-    if (this.right !== null && !this.right.shouldBeTreatedAsNull()) {
+    if (this.right !== null) {
       return this.right.findMin();
     }
 
     let current = this as AbstractBSTNode;
-    while (
-      current.parent !== null &&
-      !current.parent.shouldBeTreatedAsNull() &&
-      current === current.parent.right
-    ) {
+    while (current.parent !== null && current === current.parent.right) {
       current = current.parent;
-    }
-
-    if (current.parent === null || current.parent.shouldBeTreatedAsNull()) {
-      return null;
     }
 
     return current.parent;
@@ -108,21 +92,13 @@ export abstract class AbstractBSTNode extends AsciiArtNode {
    * Returns the node with the next smaller key (the predecessor) in the BST.
    */
   nextSmaller(): INodeOrNull {
-    if (this.left !== null && !this.left.shouldBeTreatedAsNull()) {
+    if (this.left !== null) {
       return this.left.findMax();
     }
 
     let current = this as AbstractBSTNode;
-    while (
-      current.parent !== null &&
-      !current.parent.shouldBeTreatedAsNull() &&
-      current === current.parent.left
-    ) {
+    while (current.parent !== null && current === current.parent.left) {
       current = current.parent;
-    }
-
-    if (current.parent === null || current.parent.shouldBeTreatedAsNull()) {
-      return null;
     }
 
     return current.parent;
